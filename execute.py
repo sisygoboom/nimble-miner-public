@@ -32,7 +32,7 @@ def execute(task_args):
         return tokenizer(
             examples["text"], padding="max_length", truncation=True
         )
-  
+
     model = AutoModelForSequenceClassification.from_pretrained(
         task_args["model_name"], num_labels=task_args["num_labels"]
     )
@@ -42,14 +42,15 @@ def execute(task_args):
     dataset = load_dataset(task_args["dataset_name"])
     tokenized_datasets = dataset.map(tokenize_function, batched=True)
 
-    small_train_dataset = (
-        tokenized_datasets["train"].shuffle(seed=task_args["seed"]).select(range(task_args["num_rows"]))
-    )
-    small_eval_dataset = (
-        tokenized_datasets["train"].shuffle(seed=task_args["seed"]).select(range(task_args["num_rows"]))
-    )
+    small_train_dataset = tokenized_datasets["train"].shuffle(seed=task_args["seed"]).select(range(task_args["num_rows"]))
+    small_eval_dataset = tokenized_datasets["train"].shuffle(seed=task_args["seed"]).select(range(task_args["num_rows"]))
+    
+    # Enable fp16 mixed precision training
     training_args = TrainingArguments(
-        output_dir="my_model", evaluation_strategy="epoch", save_strategy='epoch',
+        output_dir="my_model",
+        evaluation_strategy="epoch",
+        save_strategy='epoch',
+        fp16=True,  # This enables mixed precision training
     )
 
     trainer = Trainer(
