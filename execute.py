@@ -50,7 +50,11 @@ def execute(task_args):
         output_dir="my_model",
         evaluation_strategy="epoch",
         save_strategy='epoch',
-        fp16=True,  # This enables mixed precision training
+        fp16=True,
+        tf32=True,
+        torch_compile=True,
+        dataloader_num_workers=4,
+        per_device_train_batch_size=32
     )
 
     trainer = Trainer(
