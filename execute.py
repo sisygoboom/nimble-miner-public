@@ -54,7 +54,7 @@ def execute(task_args):
         tf32=True,
         torch_compile=True,
         dataloader_num_workers=4,
-        per_device_train_batch_size=32
+        per_device_train_batch_size=42
     )
 
     trainer = Trainer(

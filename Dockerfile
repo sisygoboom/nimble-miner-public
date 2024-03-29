@@ -14,6 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Define an environment variable for the address
 ENV ADDR=""
 
+ENV TOKENIZERS_PARALLELISM=true
+
 # The entry point script that runs when the container starts
 CMD if [ -z "$ADDR" ]; then echo "addr is not set." && exit 1; else \
     echo "----------------------------------" && \
