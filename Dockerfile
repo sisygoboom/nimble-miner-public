@@ -16,6 +16,8 @@ ENV ADDR=""
 
 ENV TOKENIZERS_PARALLELISM=true
 
+ENV PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 # The entry point script that runs when the container starts
 CMD if [ -z "$ADDR" ]; then echo "addr is not set." && exit 1; else \
     echo "----------------------------------" && \

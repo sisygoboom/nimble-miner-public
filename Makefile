@@ -13,6 +13,8 @@ ifndef addr
 endif
 	@echo "----------------------------------"
 	@echo "Starting Process for Address $(addr)"
+
+	export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
 	
 	source ./nimenv_localminers/bin/activate && \
 	python execute.py $(addr)

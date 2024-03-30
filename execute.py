@@ -7,6 +7,7 @@ import numpy as np
 import requests
 import torch
 from datasets import load_dataset
+import gc
 from transformers import (AutoModelForSequenceClassification, AutoTokenizer,
                           Trainer, TrainingArguments)
 
@@ -66,6 +67,9 @@ def execute(task_args):
     )
     trainer.train()
     trainer.save_model("my_model")
+    del trainer
+    del dataset
+    del model
 
 
 def print_in_color(text, color_code):
@@ -130,6 +134,7 @@ def perform():
                 print_in_color(f"Error: {e}", "\033[31m")
             finally:
                 torch.cuda.empty_cache()
+                gc.collect()
     else:
         print_in_color("Address not provided.", "\033[31m")
     
