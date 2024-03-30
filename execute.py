@@ -48,8 +48,8 @@ def execute(task_args):
     # Enable fp16 mixed precision training
     training_args = TrainingArguments(
         output_dir="my_model",
-        evaluation_strategy="epoch",
-        save_strategy='epoch',
+        evaluation_strategy="no",
+        save_strategy='no',
         fp16=True,
         tf32=True,
         torch_compile=True,
@@ -119,16 +119,17 @@ def perform():
         while True:
             try:
                 print_in_color(f"Preparing", "\033[33m")
-                time.sleep(5)
                 task_args = register_particle(addr)
                 print_in_color(f"Address {addr} received the task.", "\033[33m")
                 execute(task_args)
                 print_in_color(f"Address {addr} executed the task.", "\033[32m")
                 complete_task(addr)
                 print_in_color(f"Address {addr} completed the task. Waiting for next", "\033[32m")
-                time.sleep(60)
             except Exception as e:
+                time.sleep(5)
                 print_in_color(f"Error: {e}", "\033[31m")
+            finally:
+                torch.cuda.empty_cache()
     else:
         print_in_color("Address not provided.", "\033[31m")
     
